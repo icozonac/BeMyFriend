@@ -47,9 +47,11 @@ namespace API.Data
                 .SingleOrDefaultAsync(x => x.UserName == userName);
         }
 
-        public Task<IEnumerable<MemberDto>> GetMembersAsync()
+        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Users
+                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
         public async Task<MemberDto> GetMemberAsync(string userName)
