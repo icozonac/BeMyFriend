@@ -5,7 +5,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './components/nav/nav.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -23,6 +23,8 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { MemberEditComponent } from './components/member-edit/member-edit.component';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { PhotoEditorComponent } from './components/members/photo-editor/photo-editor.component';
+import { TextInputComponent } from './components/forms/text-input/text-input.component';
+import { DatePickerComponent } from './components/forms/date-picker/date-picker.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { PhotoEditorComponent } from './components/members/photo-editor/photo-ed
     MembersCardComponent,
     MemberEditComponent,
     PhotoEditorComponent,
+    TextInputComponent,
+    DatePickerComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +51,7 @@ import { PhotoEditorComponent } from './components/members/photo-editor/photo-ed
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule,
   ],
   providers: [
