@@ -38,7 +38,7 @@
       <a
         class="dropdown-toggle text-light text-decoration-none ms-2"
         dropdownToggle
-        >Welcome {{ user.username | titlecase }}
+        >Welcome {{ user.knownAs | titlecase }}
       </a>
       <div class="dropdown-menu mt-2" *dropdownMenu>
         <a class="dropdown-item" routerLink="/member/edit">Edit Profile</a>
