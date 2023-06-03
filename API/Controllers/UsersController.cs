@@ -9,6 +9,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace API.Controllers
 {
     [Authorize]
@@ -24,6 +25,7 @@ namespace API.Controllers
             _mapper = mapper;
             _photoServie = photoServie;
         }
+
 
         [HttpGet]
         public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
@@ -45,7 +47,7 @@ namespace API.Controllers
 
         }
 
-        
+
         [HttpGet("{username}")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {

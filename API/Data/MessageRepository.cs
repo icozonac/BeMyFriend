@@ -52,7 +52,7 @@ namespace API.Data
             return await PagedList<MessageDto>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
         }
 
-        public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUserName, string recipientUSerName)
+        public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUserName, string recipientUserName)
         {
             var messages = await _context.Messages
                 .Include(u => u.Sender)
@@ -60,9 +60,11 @@ namespace API.Data
                 .Include(u => u.Recipient)
                 .ThenInclude(p => p.Photos)
                 .Where(
-                   m => m.RecipientUsername == currentUserName
-                   && m.SenderUsername == recipientUSerName ||
-                   m.RecipientUsername == recipientUSerName
+                   m => m.RecipientUsername == currentUserName &&
+                   m.RecipientDeleted == false
+                   && m.SenderUsername == recipientUserName ||
+                   m.RecipientUsername == recipientUserName 
+                   && m.RecipientDeleted == false
                    && m.SenderUsername == currentUserName
                 )
                 .OrderBy(m => m.MessageSent)
