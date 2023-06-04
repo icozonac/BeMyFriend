@@ -18,7 +18,7 @@ import { TestErrorComponent } from './components/errors/test-error/test-error.co
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { NotFoundComponent } from './components/errors/not-found/not-found.component';
 import { ServerErrorComponent } from './components/errors/server-error/server-error.component';
-import { MembersCardComponent } from './components/members/members-card/members-card.component';
+import { MembersCardComponent } from './components/members/member-card/members-card.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { MemberEditComponent } from './components/member-edit/member-edit.component';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';

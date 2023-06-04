@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Sqlite.Query.Internal;
+
 
 namespace API.Controllers
 {
@@ -60,6 +60,7 @@ namespace API.Controllers
             return Ok(await _userManager.GetRolesAsync(user));
 
         }
+
 
         [Authorize(Policy = "ModeratePhotoRole")]
         [HttpGet("photos-to-moderate")]

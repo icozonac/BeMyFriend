@@ -45,3 +45,23 @@
   font-size: 20px;
   font-weight: 600;
 }
+
+@keyframes fa-blink {
+  0% {
+    opacity: 0.4;
+  }
+  20% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+
+.is-online {
+  animation: fa-blink 1.8s infinite;
+  color: #00ff00;
+}
