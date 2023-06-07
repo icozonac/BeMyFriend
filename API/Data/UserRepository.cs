@@ -24,10 +24,6 @@ namespace API.Data
             _context.Entry(user).State = EntityState.Modified;
         }
 
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
@@ -78,6 +74,12 @@ namespace API.Data
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
                 
+        }
+
+        public async Task<string> GetUserGender(string userName)
+        {
+            return await _context.Users.Where(x => x.UserName == userName)
+                .Select(x => x.Gender ).FirstOrDefaultAsync();
         }
     }
 }
