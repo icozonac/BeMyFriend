@@ -1,16 +1,16 @@
-<div class="card">
+<div class="card ">
   <div class="card-body">
     <div *ngIf="(messageService.messageThread$ | async)?.length === 0">
       No messages yet... say hi by using the message box below
     </div>
     <ul
       #scrollMe
-      style="overflow-y: auto; height: 355px"
+      style="overflow-y: scroll; height: 355px;"
       [scrollTop]="scrollMe.scrollHeight"
-      *ngIf="messageService.messageThread$ | async as messages"
+      *ngIf="(messageService.messageThread$ | async)!.length > 0"
       class="chat"
     >
-      <li *ngFor="let message of messages">
+      <li *ngFor="let message of messageService.messageThread$ | async">
         <div class="d-flex">
           <span class="chat-img flaot-end">
             <img
