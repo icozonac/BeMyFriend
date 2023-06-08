@@ -9,6 +9,8 @@ import { Message } from 'src/app/models/message';
 import { PresenceService } from 'src/app/services/presence.service';
 import { User } from 'src/app/models/user';
 import { take } from 'rxjs';
+import { MembersService } from 'src/app/services/members.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-member-detail',
@@ -31,7 +33,9 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private messageService: MessageService,
     public presenceService: PresenceService,
-    private router: Router
+    private router: Router,
+    private membersService: MembersService,
+    private toastr: ToastrService
   ) {
     this.accountService.currentUser$.pipe(take(1)).subscribe({
       next: (user) => {
@@ -108,5 +112,13 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     } else {
       this.messageService.stopHubConnection();
     }
+  }
+
+  addLike(member: Member) {
+    this.membersService.addLike(member.userName).subscribe({
+      next: () => {
+        this.toastr.success('You have liked ' + member.knownAs);
+      },
+    });
   }
 }
