@@ -41,6 +41,3 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# appsettings.json
-/API/appsettings.json
-
