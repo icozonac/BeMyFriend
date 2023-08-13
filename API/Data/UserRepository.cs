@@ -19,7 +19,7 @@ namespace API.Data
             _mapper = mapper;
         }
 
-        public void Update(AppUser user)
+        public void Update(AppUser user) //actualizarea unei entitati
         {
             _context.Entry(user).State = EntityState.Modified;
         }

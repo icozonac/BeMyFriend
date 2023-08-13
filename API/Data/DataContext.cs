@@ -36,7 +36,7 @@ namespace API.Data
                 .IsRequired();
 
             builder.Entity<UserLike>()
-                .HasKey(k => new {k.SourceUserId, k.TargetUserId});
+                .HasKey(k => new {k.SourceUserId, k.TargetUserId}); //cheia primara compusa
             
             builder.Entity<UserLike>()
                 .HasOne(s => s.SourceUser)

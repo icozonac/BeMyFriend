@@ -29,13 +29,13 @@ namespace API.Extensions
                     ValidateAudience = false
                 };
 
-                options.Events = new JwtBearerEvents
+                options.Events = new JwtBearerEvents // personalizarea comportamentului autentificării
                 {
                     OnMessageReceived = context =>
                     {
-                        var accessToken = context.Request.Query["access_token"];
-                        
-                        var path = context.HttpContext.Request.Path;
+                        var accessToken = context.Request.Query["access_token"]; // accesarea tokenului din query string
+
+                        var path = context.HttpContext.Request.Path; //calea (path) cererii primite.
                         if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
                         {
                             context.Token = accessToken;

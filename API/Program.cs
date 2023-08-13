@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddCors();   // restrictioneaza accesul la resursele dintr-un alt domeniu
 builder.Services.AddControllers();
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
@@ -26,6 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     
 }
+
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseCors(builder => builder.WithOrigins("https://localhost:4200").AllowAnyHeader()
@@ -35,6 +37,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
 app.MapHub<PresenceHub>("hubs/presence");
 app.MapHub<MessageHub>("hubs/message");
 
@@ -47,6 +50,7 @@ try
     var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
     await context.Database.MigrateAsync();
     await context.Database.ExecuteSqlRawAsync("DELETE FROM [Connections]");
+
     await Seed.SeedUsers(userManager, roleManager);
 }
 catch (Exception ex)
