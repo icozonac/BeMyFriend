@@ -60,11 +60,11 @@ namespace API.Controllers
                 .SingleOrDefaultAsync(x => 
                 x.UserName == loginDto.Username);
 
-            if(user == null) return Unauthorized("invalid username");
+            if(user == null) return BadRequest("Invalid Username");
 
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
              
-            if(!result) return Unauthorized("Invalid Password");
+            if(!result) return BadRequest("Invalid Password");
 
             return new UserDto
             {
