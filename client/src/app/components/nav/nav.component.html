@@ -4,7 +4,16 @@
       >Be My Friend</a
     >
 
-    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+    <ul class="navbar-nav me-auto mb-2 menu" id="menu" [class.is-open]="isMenuOpen">
+      <ng-container *ngIf="!(accountService.currentUser$ | async) && isMobile">
+        <app-login (click)="(toggleMenu)"></app-login>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/register" routerLinkActive="active"
+            >Register</a
+          >
+        </li>
+      </ng-container>
+
       <ng-container *ngIf="accountService.currentUser$ | async">
         <li class="nav-item">
           <a
@@ -38,45 +47,32 @@
       </ng-container>
     </ul>
 
-    <div
-      class="dropdown"
-      *ngIf="accountService.currentUser$ | async as user"
-      dropdown
-    >
-      <img src="{{ user.photoUrl || './assets/user.png' }}" alt="user photo" />
-      <a
-        class="dropdown-toggle text-light text-decoration-none ms-2"
-        dropdownToggle
-        >Welcome {{ user.knownAs | titlecase }}
-      </a>
-      <div class="dropdown-menu mt-2" *dropdownMenu>
-        <a class="dropdown-item" routerLink="/member/edit">Edit Profile</a>
-        <a class="dropdown-item" (click)="logout()">Logout</a>
+    <app-login *ngIf="!isMobile"></app-login>
+
+    <div class="d-flex">
+      <div class="burger" (click)="toggleMenu()">
+        <i class="fs-1 material-icons">{{ isMenuOpen ? "close" : "menu" }}</i>
+      </div>
+
+      <div
+        class="dropdown"
+        *ngIf="accountService.currentUser$ | async as user"
+        dropdown
+      >
+        <img
+          src="{{ user.photoUrl || './assets/user.png' }}"
+          alt="user photo"
+        />
+        <a
+          class="dropdown-toggle text-light text-decoration-none ms-2"
+          dropdownToggle
+          >Welcome {{ user.knownAs | titlecase }}
+        </a>
+        <div class="dropdown-menu mt-2" *dropdownMenu>
+          <a class="dropdown-item" routerLink="/member/edit">Edit Profile</a>
+          <a class="dropdown-item" (click)="logout()">Logout</a>
+        </div>
       </div>
     </div>
-
-    <form
-      *ngIf="!(accountService.currentUser$ | async)"
-      #loginForm="ngForm"
-      class="d-flex"
-      (ngSubmit)="login()"
-      autocomplete="off"
-    >
-      <input
-        name="username"
-        [(ngModel)]="model.username"
-        class="form-control me-2"
-        type="text"
-        placeholder="Username"
-      />
-      <input
-        name="password"
-        [(ngModel)]="model.password"
-        class="form-control me-2"
-        type="password"
-        placeholder="Password"
-      />
-      <button class="btn btn-success" type="submit">Login</button>
-    </form>
   </div>
 </nav>

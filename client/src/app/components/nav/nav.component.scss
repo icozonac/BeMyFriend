@@ -1,3 +1,6 @@
+$menuHeight: 68px;
+$menuBreakpoint: 768px;
+
 .dropdown-toggle,
 .dropdown-item {
   cursor: pointer;
@@ -11,5 +14,59 @@ img {
 }
 
 nav {
-  height: 68px;
+  height: $menuHeight;
+}
+
+.burger {
+  padding: 0 10px;
+  display: none;
+  cursor: pointer;
+  i {
+    color: white;
+  }
+
+  @media (max-width: $menuBreakpoint) {
+    display: block;
+  }
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+
+  @media (max-width: $menuBreakpoint) {
+    display: none;
+
+    &.is-open {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: #{$menuHeight};
+      padding: 7px 4px;
+
+      border: none;
+      border-radius: 5px;
+      box-shadow: inset 1px 1px rgba(255, 255, 255, 0.2),
+        inset -1px -1px rgba(255, 255, 255, 0.1),
+        1px 3px 24px -1px rgba(0, 0, 0, 0.15);
+      background-color: transparent;
+      background-image: linear-gradient(
+        125deg,
+        rgba(255, 255, 255, 0.3),
+        rgba(255, 255, 255, 0.2) 70%
+      );
+      backdrop-filter: blur(5px);
+
+      .nav-item {
+        border-bottom: 1px solid #ffffff;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar-brand {
+    font-size: 18px;
+  }
 }

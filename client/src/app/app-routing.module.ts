@@ -14,9 +14,11 @@ import { PreventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.gua
 import { MemberDetailedResolver } from './resolvers/member-detailed.resolver';
 import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
 import { AdminGuard } from './guards/admin.guard';
+import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'register', component: RegisterComponent },
   {
     path: '',
     runGuardsAndResolvers: 'always',

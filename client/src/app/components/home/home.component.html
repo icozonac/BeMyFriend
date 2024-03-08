@@ -1,11 +1,11 @@
-<div class="container mt-5">
+<div class="container" style="margin-top: 10%">
   <div *ngIf="!registerMode" style="text-align: center">
     <h1>Find your friends</h1>
     <p class="lead">
       Come on in to view your matches... all you need to do is sign up!
     </p>
     <div class="text-center">
-      <button (click)="registerToggle()" class="btn btn-primary btn-lg me-2">
+      <button class="btn btn-primary btn-lg me-2" routerLink="/register">
         Register
       </button>
       <button class="btn btn-outline-primary btn-lg">Learn more</button>
@@ -15,9 +15,7 @@
   <div *ngIf="registerMode" class="container">
     <div class="row justify-content-center">
       <div class="col-4 text-center">
-        <app-register
-          (cancelRegister)="cancelRegisterMode($event)"
-        ></app-register>
+        <app-register></app-register>
       </div>
     </div>
   </div>

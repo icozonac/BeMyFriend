@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
-    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 12);
   }
 
   initializeForm() {
@@ -77,14 +77,9 @@ export class RegisterComponent implements OnInit {
         this.router.navigateByUrl('/members');
       },
       error: (err) => {
-        console.log(err);
         this.validationErrors = err;
       },
     });
-  }
-
-  cancel() {
-    this.cancelRegister.emit(false);
   }
 
   private getDateOnly(dob: string | undefined) {
