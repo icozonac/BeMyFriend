@@ -4,14 +4,20 @@
       >Be My Friend</a
     >
 
-    <ul class="navbar-nav me-auto mb-2 menu" id="menu" [class.is-open]="isMenuOpen">
+    <ul
+      class="navbar-nav me-auto mb-2 menu"
+      id="menu"
+      [class.is-open]="isMenuOpen"
+    >
       <ng-container *ngIf="!(accountService.currentUser$ | async) && isMobile">
         <app-login (click)="(toggleMenu)"></app-login>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/register" routerLinkActive="active"
-            >Register</a
-          >
-        </li>
+
+        <a
+          class="nav-link d-flex justify-content-center fs-5"
+          routerLink="/register"
+          routerLinkActive="active"
+          >Register</a
+        >
       </ng-container>
 
       <ng-container *ngIf="accountService.currentUser$ | async">

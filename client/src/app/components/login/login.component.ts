@@ -2,14 +2,17 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/services/account.service';
+import { hueRotateAnimation } from 'lib';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  animations: [hueRotateAnimation({ anchor: 'hueButton', duration: 20000 })],
 })
 export class LoginComponent {
   model: any = {};
+  hueBtnState = false;
 
   constructor(
     private toastr: ToastrService,

@@ -34,6 +34,7 @@ import { RolesModalComponent } from './components/modals/roles-modal/roles-modal
 import { ConfirmDialogComponent } from './components/modals/confirm-dialog/confirm-dialog.component';
 import { LoginComponent } from './components/login/login.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,6 +61,7 @@ import { LoginComponent } from './components/login/login.component';
     RolesModalComponent,
     ConfirmDialogComponent,
     LoginComponent,
+
   ],
   imports: [
     BrowserModule,

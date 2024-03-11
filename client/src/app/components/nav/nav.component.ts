@@ -1,7 +1,6 @@
 import { NavigationStart, Router } from '@angular/router';
 import { AccountService } from '../../services/account.service';
-import { Component, HostListener, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-nav',
@@ -15,9 +14,9 @@ export class NavComponent implements OnInit {
   constructor(public accountService: AccountService, private router: Router) {}
 
   ngOnInit(): void {
-    this.isMobile = window.innerWidth < 768;
+    this.isMobile = window.innerWidth < 769;
     window.addEventListener('resize', () => {
-      this.isMobile = window.innerWidth < 768;
+      this.isMobile = window.innerWidth < 769;
     });
 
     this.router.events.subscribe((event) => {
