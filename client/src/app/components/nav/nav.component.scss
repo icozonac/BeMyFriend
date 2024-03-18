@@ -1,5 +1,6 @@
 $menuHeight: 68px;
 $menuBreakpoint: 768px;
+$menuHeightMobile: 85px;
 
 .dropdown-toggle,
 .dropdown-item {
@@ -15,6 +16,9 @@ img {
 
 nav {
   height: $menuHeight;
+  @media screen and (max-width: $menuBreakpoint) {
+    height: $menuHeightMobile;
+  }
 }
 
 .burger {
@@ -26,7 +30,8 @@ nav {
   }
 
   @media screen and (max-width: 768px) {
-    display: block;
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -42,7 +47,7 @@ nav {
       position: absolute;
       left: 0;
       right: 0;
-      top: #{$menuHeight};
+      top: #{$menuHeightMobile};
       padding: 7px 4px;
 
       border: none;
@@ -68,5 +73,9 @@ nav {
 @media screen and (max-width: $menuBreakpoint) {
   .navbar-brand {
     font-size: 18px;
+  }
+  .dropdown-toggle {
+    margin-left: 5px !important;
+    font-size: 14px;
   }
 }
