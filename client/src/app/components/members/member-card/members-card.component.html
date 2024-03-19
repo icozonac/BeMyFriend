@@ -9,21 +9,21 @@
       <li class="list-inline-item">
         <button
           routerLink="/members/{{ member.userName }}"
-          class="btn btn-primary"
+          class="btn btn-info"
         >
           <i class="fa fa-user"></i>
         </button>
       </li>
       <li class="list-inline-item">
         <button class="btn btn-primary" (click)="addLike(member)">
-          <i class="fa fa-heart"></i>
+          <i class="fa fa-thumbs-up"></i>
         </button>
       </li>
       <li class="list-inline-item">
         <button
           routerLink="/members/{{ member.userName }}"
           [queryParams]="{ tab: 'Messages' }"
-          class="btn btn-primary"
+          class="btn btn-info"
         >
           <i class="fa fa-envelope"></i>
         </button>

@@ -1,10 +1,10 @@
-<div class="text-center mt-3">
+<div class="container-fluid text-center mt-3">
   <h2>
     {{ predicate === "liked" ? "Members I like" : "Members who like me" }}
   </h2>
 
   <div class="container mt-3">
-    <div class="d-flex">
+    <div class="d-flex justify-content-center">
       <div class="btn-group" name="predicate">
         <button
           class="btn btn-primary"
@@ -26,14 +26,14 @@
     </div>
   </div>
 
-  <div class="row mt-3">
-    <div class="col-2" *ngFor="let member of members">
+  <div class="row mt-3 justify-content-center">
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let member of members">
       <app-members-card [member]="member"></app-members-card>
     </div>
   </div>
 </div>
 
-<div class="d-flex justify-content-center" *ngIf="pagination">
+<div class="container-fluid d-flex justify-content-center mt-3" *ngIf="pagination">
   <pagination
     [boundaryLinks]="true"
     [totalItems]="pagination.totalItems"
