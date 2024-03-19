@@ -15,10 +15,15 @@ import { MemberDetailedResolver } from './resolvers/member-detailed.resolver';
 import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
 import { AdminGuard } from './guards/admin.guard';
 import { RegisterComponent } from './components/register/register.component';
+import { PreventRegisterGuard } from './guards/prevent-register.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'register', component: RegisterComponent },
+  {
+    path: 'register',
+    canActivate: [PreventRegisterGuard],
+    component: RegisterComponent,
+  },
   {
     path: '',
     runGuardsAndResolvers: 'always',
