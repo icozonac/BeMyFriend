@@ -8,5 +8,19 @@ input[type="file"] {
 
 .btn-photo {
   width: 50px;
-  height: 40px;
+}
+
+.not-approved {
+  opacity: 0.2;
+}
+.img-wrapper {
+  position: relative;
+}
+.img-text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  bottom: 30%;
 }

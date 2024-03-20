@@ -9,9 +9,13 @@ namespace API.Interfaces
         void Update(AppUser user);
         Task<IEnumerable<AppUser>> GetUsersAsync();
         Task<AppUser> GetUserByIdAsync(int id);
-        Task<AppUser> GetUserByUserNameAsync(string userName);
+        Task<AppUser> GetUserByUserNameAsync(string userName);    
+        Task<AppUser>GetUSerByPhotoId(int photoId);
         Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams);
-        Task<MemberDto> GetMemberAsync(string userName);
+        Task<MemberDto> GetMemberAsync(string userName, bool isCurrentUser);
         Task<string> GetUserGender(string userName);
+
+
+
     }
 }

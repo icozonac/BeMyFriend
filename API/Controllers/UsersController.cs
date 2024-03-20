@@ -49,9 +49,12 @@ namespace API.Controllers
         }
 
         [HttpGet("{username}")]
-        public async Task<ActionResult<MemberDto>> GetUser(string username)
+        public async Task<ActionResult<MemberDto>> GetUser(string userName)
         {
-            return await _uow.UserRepository.GetMemberAsync(username);
+            var currentUsername = User.GetUsername();
+            return await _uow.UserRepository.GetMemberAsync(userName,
+                isCurrentUser: currentUsername == userName
+            );
 
         }
 
@@ -75,9 +78,9 @@ namespace API.Controllers
         {
             var user = await _uow.UserRepository.GetUserByUserNameAsync(User.GetUsername());
 
-            if (user == null) return NotFound();
 
             var result = await _photoServie.AddPhotoAsync(file);
+
 
             if (result.Error != null) return BadRequest(result.Error.Message);
 
@@ -87,19 +90,12 @@ namespace API.Controllers
                 PublicId = result.PublicId
             };
 
-            if (user.Photos.Count == 0)
-            {
-                photo.IsMain = true;
-            }
 
             user.Photos.Add(photo);
 
             if (await _uow.Complete())
             {
-                return CreatedAtAction(nameof(GetUser),
-                               new { username = user.UserName },
-                                    _mapper.Map<PhotoDto>(photo)
-                );
+                return CreatedAtRoute("GetUser", new { username = user.UserName }, _mapper.Map<PhotoDto>(photo));
             }
             return BadRequest("Problem adding photo");
         }
@@ -132,7 +128,7 @@ namespace API.Controllers
         {
             var user = await _uow.UserRepository.GetUserByUserNameAsync(User.GetUsername());
 
-            var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
+            var photo = await _uow.PhotoRepository.GetPhotoById(photoId);
 
             if (photo == null) return NotFound();
 
