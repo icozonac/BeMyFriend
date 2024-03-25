@@ -17,13 +17,15 @@ namespace API.Controllers
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        private readonly IPhotoService _photoServie;
+        private readonly IPhotoService _photoService;
+        private readonly IMatchService _matchService;
 
-        public UsersController(IUnitOfWork uow, IMapper mapper, IPhotoService photoServie)
+        public UsersController(IUnitOfWork uow, IMapper mapper, IPhotoService photoService, IMatchService matchService)
         {
             _uow = uow;
             _mapper = mapper;
-            _photoServie = photoServie;
+            _photoService = photoService;
+            _matchService = matchService;
         }
 
 
@@ -41,6 +43,8 @@ namespace API.Controllers
 
             var users = await _uow.UserRepository.GetMembersAsync(userParams);
 
+            users.ForEach(x => x.MatchScore = _matchService.CalculateMatchScoreAsync(userParams.CurrentUsername, x.UserName).Result);
+
             Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize,
                 users.TotalCount, users.TotalPages));
 
@@ -51,10 +55,13 @@ namespace API.Controllers
         [HttpGet("{username}")]
         public async Task<ActionResult<MemberDto>> GetUser(string userName)
         {
+
             var currentUsername = User.GetUsername();
-            return await _uow.UserRepository.GetMemberAsync(userName,
-                isCurrentUser: currentUsername == userName
-            );
+            var user = await _uow.UserRepository.GetMemberAsync(userName, isCurrentUser: currentUsername == userName);
+
+            user.MatchScore = _matchService.CalculateMatchScoreAsync(currentUsername, userName).Result;
+
+            return user;
 
         }
 
@@ -79,7 +86,7 @@ namespace API.Controllers
             var user = await _uow.UserRepository.GetUserByUserNameAsync(User.GetUsername());
 
 
-            var result = await _photoServie.AddPhotoAsync(file);
+            var result = await _photoService.AddPhotoAsync(file);
 
 
             if (result.Error != null) return BadRequest(result.Error.Message);
@@ -95,7 +102,7 @@ namespace API.Controllers
 
             if (await _uow.Complete())
             {
-                return CreatedAtRoute("GetUser", new { username = user.UserName }, _mapper.Map<PhotoDto>(photo));
+                return CreatedAtAction("GetUser", new { username = user.UserName }, _mapper.Map<PhotoDto>(photo));
             }
             return BadRequest("Problem adding photo");
         }
@@ -136,7 +143,7 @@ namespace API.Controllers
 
             if (photo.PublicId != null)
             {
-                var result = await _photoServie.DeletePhotoAsync(photo.PublicId);
+                var result = await _photoService.DeletePhotoAsync(photo.PublicId);
                 if (result.Error != null) return BadRequest(result.Error.Message);
             }
 
@@ -146,5 +153,6 @@ namespace API.Controllers
 
             return BadRequest("Failed to delete photo");
         }
+
     }
 }

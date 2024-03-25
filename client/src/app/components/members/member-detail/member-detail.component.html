@@ -34,7 +34,9 @@
       </div>
       <div class="card-footer">
         <div class="btn-group d-flex">
-          <button class="btn btn-primary" (click)="addLike(member)">Like</button>
+          <button class="btn btn-primary" (click)="addLike(member)">
+            Like
+          </button>
           <button (click)="selectTab('Messages')" class="btn btn-success">
             Messages
           </button>
@@ -50,6 +52,17 @@
       >
         <h4>Description</h4>
         <p>{{ member.introduction }}</p>
+        <h4>Match Score</h4>
+        <div class="progress">
+          <div
+            class="progress-bar bg-info"
+            role="progressbar"
+            [style.width.%]="member.matchScore"
+            [attr.aria-valuenow]="member.matchScore"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >{{member.matchScore | number}} %</div>
+        </div>
         <h4>Looking for</h4>
         <p>{{ member.lookingFor }}</p>
       </tab>
