@@ -32,9 +32,11 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/messages" routerLinkActive="active"
-            >Messages</a
-          >
+          <nz-badge [nzCount]="unreadMessagesCount" >
+            <a class="nav-link " routerLink="/messages" routerLinkActive="active"
+              >Messages</a
+            >
+          </nz-badge>
         </li>
         <li *appHasRole="['Admin', 'Moderator']" class="nav-item">
           <a class="nav-link" routerLink="/admin" routerLinkActive="active"

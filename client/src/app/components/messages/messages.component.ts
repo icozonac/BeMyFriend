@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs';
 import { Message } from 'src/app/models/message';
 import { Pagination } from 'src/app/models/pagination';
 import { MessageService } from 'src/app/services/message.service';
@@ -42,6 +43,12 @@ export class MessagesComponent implements OnInit {
           this.messages.findIndex((m) => m.id === id),
           1
         );
+      },
+    });
+
+    this.messageService.unreadMessagesCount$.pipe(take(1)).subscribe({
+      next: (count) => {
+        this.messageService.unreadMessagesCountSource.next(count - 1);
       },
     });
   }

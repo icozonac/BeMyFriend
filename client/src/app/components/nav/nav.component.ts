@@ -1,6 +1,7 @@
 import { NavigationStart, Router } from '@angular/router';
 import { AccountService } from '../../services/account.service';
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-nav',
@@ -11,7 +12,13 @@ export class NavComponent implements OnInit {
   isMenuOpen = false;
   isMobile = false;
 
-  constructor(public accountService: AccountService, private router: Router) {}
+  unreadMessagesCount = 0;
+
+  constructor(
+    public accountService: AccountService,
+    private router: Router,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.isMobile = window.innerWidth < 769;
@@ -23,6 +30,17 @@ export class NavComponent implements OnInit {
       if (event instanceof NavigationStart && this.isMenuOpen) {
         this.isMenuOpen = false;
       }
+    });
+
+    this.messageService.getUnreadMessagesCount();
+
+    this.messageService.unreadMessagesCount$.subscribe({
+      next: (count) => {
+        this.unreadMessagesCount = count;
+      },
+      error: (error) => {
+        console.log(error);
+      },
     });
   }
 

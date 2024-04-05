@@ -53,16 +53,16 @@
         <h4>Description</h4>
         <p>{{ member.introduction }}</p>
         <h4>Match Score</h4>
-        <div class="progress">
-          <div
-            class="progress-bar bg-info"
-            role="progressbar"
-            [style.width.%]="member.matchScore"
-            [attr.aria-valuenow]="member.matchScore"
-            aria-valuemin="0"
-            aria-valuemax="100"
-          >{{member.matchScore | number}} %</div>
-        </div>
+        <nz-progress
+          nzType="circle"
+          [nzPercent]="member.matchScore | number : '1.2-2'"
+          [nzStrokeColor]="{
+            '0%': '#108ee9',
+            '50%': '#2db7f5',
+            '100%': '#87d068'
+          }"
+        ></nz-progress>
+
         <h4>Looking for</h4>
         <p>{{ member.lookingFor }}</p>
       </tab>

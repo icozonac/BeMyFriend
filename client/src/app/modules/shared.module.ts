@@ -11,6 +11,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from 'ngx-timeago';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 
 @NgModule({
   declarations: [],
@@ -44,6 +46,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     ButtonsModule,
     TimeagoModule,
     ModalModule,
+    NzProgressModule,
+    NzBadgeModule,
   ],
 })
 export class SharedModule {}

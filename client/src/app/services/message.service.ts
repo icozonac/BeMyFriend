@@ -18,6 +18,9 @@ export class MessageService {
   private messageThreadSource = new BehaviorSubject<Message[]>([]);
   messageThread$ = this.messageThreadSource.asObservable();
 
+  public unreadMessagesCountSource = new BehaviorSubject<number>(0);
+  unreadMessagesCount$ = this.unreadMessagesCountSource.asObservable();
+
   constructor(private http: HttpClient) {}
 
   createHubConnection(user: User, otherUsername: string) {
@@ -32,6 +35,7 @@ export class MessageService {
 
     this.hubConnection.on('ReceiveMessageThread', (messages) => {
       this.messageThreadSource.next(messages);
+      this.getUnreadMessagesCount();
     });
 
     this.hubConnection.on('UpdatedGroup', (group: Group) => {
@@ -91,5 +95,19 @@ export class MessageService {
 
   deleteMessage(id: number) {
     return this.http.delete(this.baseUrl + 'messages/' + id);
+  }
+
+  getUnreadMessagesCount() {
+    this.getMessages(1, 9999, 'Unread').subscribe({
+      next: (response) => {
+        if (response.result) {
+          const count = response.result.length;
+          this.unreadMessagesCountSource.next(count);
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 }
