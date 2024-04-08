@@ -46,11 +46,13 @@ export class MessagesComponent implements OnInit {
       },
     });
 
-    this.messageService.unreadMessagesCount$.pipe(take(1)).subscribe({
-      next: (count) => {
-        this.messageService.unreadMessagesCountSource.next(count - 1);
-      },
-    });
+    if (this.container === 'Unread') {
+      this.messageService.unreadMessagesCount$.pipe(take(1)).subscribe({
+        next: (count) => {
+          this.messageService.unreadMessagesCountSource.next(count - 1);
+        },
+      });
+    }
   }
 
   pageChanged(event: any) {
