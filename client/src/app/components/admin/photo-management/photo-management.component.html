@@ -1,19 +1,22 @@
-<div class="row">
-  <div class="col-sm-2" *ngFor="let photo of photos">
-    <h4>{{ photo.username }}</h4>
+<div class="row mt-2">
+  <div class="col-6 col-md-4 col-lg-2 mb-4" *ngFor="let photo of photos">
+    <h4 class="text-center">{{ photo.userName | titlecase }}</h4>
     <img
       src="{{ photo.url }}"
       class="img-thumbnail p-1"
-      alt="{{ photo.username }}"
+      alt="{{ photo.userName }}"
     />
-    <div class="text-center">
+    <div class="text-center mt-1">
       <button
         class="btn btn-sm btn-success me-1"
         (click)="approvePhoto(photo.id)"
       >
         Approve
       </button>
-      <button class="btn btn-sm btndanger" (click)="rejectPhoto(photo.id)">
+      <button
+        class="btn btn-sm btn-outline-primary"
+        (click)="rejectPhoto(photo.id)"
+      >
         Reject
       </button>
     </div>
