@@ -1,4 +1,5 @@
-﻿using API.Entities;
+﻿using System.Text.RegularExpressions;
+using API.Entities;
 using API.Interfaces;
 
 namespace API.Services
@@ -12,7 +13,6 @@ namespace API.Services
             _uow = unitOfWork;
         }
 
-
         public async Task<double> CalculateMatchScoreAsync(string _user, string _recipient)
         {
             var result = 0.0;
@@ -20,69 +20,80 @@ namespace API.Services
             var user = await _uow.UserRepository.GetUserByUserNameAsync(_user);
             var recipient = await _uow.UserRepository.GetUserByUserNameAsync(_recipient);
 
-            var ageScore =  await CalculateAgeScore(user.DateOfBirth, recipient.DateOfBirth);
-
-
-            if (user.City != null && recipient.City != null)
-            { 
-                var locationScore = await CalculateLocationScore(user.City, recipient.City);
-                result += locationScore;
-            }
-             
-            if (user.Interests != null && recipient.Interests != null)
+            if (!string.IsNullOrEmpty(user.Interests) && !string.IsNullOrEmpty(recipient.Interests))
             {
-                var interestScore = await CalculateInterestScore(user.Interests, recipient.Interests);
-                result += interestScore;
+                var interestScore = await CalculateTextSimilarityScore(user.Interests, recipient.Interests);
+                result += interestScore * 0.5; // 50% weight for interests
             }
-            
-                
 
-            return (result + ageScore) *100/3;
-            
+            var ageScore = CalculateAgeScore(user.DateOfBirth, recipient.DateOfBirth);
+            result += ageScore * 0.3; // 30% weight for age
+
+            if (user.City != null && recipient.City != null && user.Country != null && recipient.Country != null)
+            {
+                double locationScore = CalculateLocationScore(user.City, recipient.City, user.Country, recipient.Country);
+                result += locationScore * 0.2; // 20% weight for location
+            }
+
+            return result * 100;
         }
 
-
-        private async Task<double> CalculateAgeScore(DateOnly userDob, DateOnly recipientDob)
+        private double CalculateAgeScore(DateOnly userDob, DateOnly recipientDob)
         {
             var ageDifference = Math.Abs(userDob.Year - recipientDob.Year);
 
-            var normalizedAgeDifference = Math.Min(1, (double)ageDifference / 5);
+            var normalizedAgeDifference = Math.Min(1, (double)ageDifference / 7);
 
             return 1 - normalizedAgeDifference;
-
         }
 
-        private Task<double> CalculateLocationScore(string userCity, string recipientCity)
+        private double CalculateLocationScore(string userCity, string recipientCity, string userCountry, string recipientCountry)
         {
-            if (userCity == recipientCity) return Task.FromResult<double>(1);
-
-            return Task.FromResult(0.5);
+            if (userCity.Equals(recipientCity, StringComparison.OrdinalIgnoreCase))
+            {
+                return 1.0;
+            }
+            else if (userCountry.Equals(recipientCountry, StringComparison.OrdinalIgnoreCase))
+            {
+                return 0.5;
+            }
+            else
+            {
+                return 0.0;
+            }
         }
 
-
-        private async Task<double> CalculateInterestScore(string userInterest, string recipientInterest)
+        private async Task<double> CalculateTextSimilarityScore(string text1, string text2)
         {
-            userInterest = userInterest.ToLower() ?? "";
-            recipientInterest = recipientInterest.ToLower() ?? "";
-
-            var jaccardIndex = await CalculateJaccardIndex(userInterest, recipientInterest);
-
-            return jaccardIndex;
-
+            var cosineSimilarity = await CalculateCosineSimilarity(text1, text2);
+            return cosineSimilarity;
         }
 
-        private static Task<double> CalculateJaccardIndex(string userInterest, string recipientInterest)
+        private static Task<double> CalculateCosineSimilarity(string text1, string text2)
         {
-            var userInterests = new HashSet<string>(userInterest.Split(' ', StringSplitOptions.RemoveEmptyEntries));
-            var recipientInterests = new HashSet<string>(recipientInterest.Split(' ', StringSplitOptions.RemoveEmptyEntries));
+            var text1Words = TokenizeAndClean(text1);
+            var text2Words = TokenizeAndClean(text2);
 
-            var intersection = userInterests.Intersect(recipientInterests).Count();
+            var allWords = text1Words.Union(text2Words).Distinct().ToArray();
+            var text1Vector = allWords.Select(word => text1Words.Count(i => i == word)).ToArray();
+            var text2Vector = allWords.Select(word => text2Words.Count(i => i == word)).ToArray();
 
-            var jaccardIndex = (double)intersection / (userInterests.Count + recipientInterests.Count - intersection);
+            double dotProduct = text1Vector.Zip(text2Vector, (a, b) => a * b).Sum();
+            double magnitudeA = Math.Sqrt(text1Vector.Sum(val => Math.Pow(val, 2)));
+            double magnitudeB = Math.Sqrt(text2Vector.Sum(val => Math.Pow(val, 2)));
 
-            return Task.FromResult(jaccardIndex);
+            if (magnitudeA == 0 || magnitudeB == 0)
+                return Task.FromResult(0.0);
+
+            double cosineSimilarity = dotProduct / (magnitudeA * magnitudeB);
+            return Task.FromResult(cosineSimilarity);
         }
 
-
+        private static List<string> TokenizeAndClean(string text)
+        {
+            var stopWords = new HashSet<string> { "a", "and", "the", "in", "of", "on", "at", "to", "for", "with", "by", "about", "as", "an", "is", "are" };
+            var words = Regex.Split(text.ToLower(), @"\W+").Where(w => !stopWords.Contains(w) && w.Length > 1).ToList();
+            return words;
+        }
     }
 }

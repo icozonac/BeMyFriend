@@ -6,7 +6,7 @@ import {
   HttpEvent,
   HttpInterceptor,
 } from '@angular/common/http';
-import { Observable, delay, finalize } from 'rxjs';
+import { Observable, finalize } from 'rxjs';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
